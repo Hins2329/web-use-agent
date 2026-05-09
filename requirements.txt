@@ -1,0 +1,33 @@
+# 核心依赖
+pydantic>=2.0,<3
+pydantic-settings>=2.0,<3
+pyyaml>=6.0,<7
+
+# 日志
+python-json-logger>=2.0,<3
+
+# 浏览器控制
+playwright>=1.40,<2
+
+# 数据处理
+beautifulsoup4>=4.11,<5
+requests>=2.28,<3
+
+# 异步支持
+aiohttp>=3.8,<4
+asyncio-contextmanager>=1.0,<2
+
+# LLM/VLM API 客户端
+# （原生支持通过 aiohttp，无需额外库）
+
+# 开发依赖
+pytest>=7.0,<8
+pytest-asyncio>=0.20,<1
+black>=22.0,<24
+flake8>=4.0,<5
+isort>=5.10,<6
+mypy>=0.990,<2
+
+# 可选: 性能优化
+redis>=4.0,<5  # 可选缓存支持
+

@@ -1,0 +1,50 @@
+llm:
+  mode: "auto"  # auto (自动路径) 或 manual (手动输入)
+  provider: "zhipu"  # zhipu, openai, claude
+  model: "glm-4.7-flash"  # 最新免费模型
+  api_key: "${ZHIPU_API_KEY}"
+  base_url: "https://open.bigmodel.cn/api/paas/v4/"
+
+vlm:
+  provider: "zhipu"
+  model: "glm-4.6v-flash"  # 最新免费视觉模型
+  api_key: "${ZHIPU_API_KEY}"
+  base_url: "https://open.bigmodel.cn/api/paas/v4/"
+  mode: "auto"  # auto (API) 或 manual (手动)
+  screenshot_dir: "./screenshots"  # 截图保存目录
+
+# 如果使用单模型方案，取消下面注释
+# unified_model:
+#   provider: "zhipu"
+#   model: "glm-4v-flash"
+#   api_key: "${ZHIPU_API_KEY}"
+#   use_for_both: true  # 同时用于VLM和LLM任务
+
+# 浏览器配置
+browser:
+  headless: false
+  window_size: [1920, 1080]
+  user_data_dir: "./browser_data"
+
+# 感知配置  
+perception:
+  cache_enabled: true
+  cache_ttl: 300
+  dom_priority: true
+
+# 执行配置
+agent:
+  max_steps: 15
+  timeout: 60
+  retry_count: 3
+  
+# 成本控制
+cost_control:
+  max_tokens_per_request: 4000
+  daily_token_limit: 100000
+  vlm_requests_per_minute: 20
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "./logs/agent.log"

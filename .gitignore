@@ -1,0 +1,97 @@
+# 虚拟环境
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 日志
+logs/
+*.log
+
+# 浏览器数据（用户数据目录）
+browser_data/
+
+# 截图目录（包含淘宝等网站的截图，不上传）
+screenshots/
+
+# 配置文件
+config.yaml
+.env
+.env.local
+
+# 临时文件
+.DS_Store
+.AppleDouble
+.LSOverride
+*.tmp
+
+# 过程数据 (这是你目录树里出现的)
+txts/
+ACTION_FORMAT_FIX_SUMMARY.md
+CRITICAL_FIX_SUMMARY.md
+EXECUTION_SUMMARY.md
+CHANGES_SUMMARY.md
+FINAL_STATUS.txt
+RECOVERY_AND_VERIFICATION_REPORT.md
+SESSION_COMPLETION_REPORT.md
+
+# 即使重构后也要忽略的备份
+documentation/archived_logs/
+tests/scratchpad/
+
+# ============================================
+# 开发工具和内部文档 (不上传到GitHub)
+# ============================================
+
+# Kiro AI 开发工具
+.kiro/
+
+# Qoder AI 开发工具
+.qoder/
+
+# 内部开发文档
+docs/CURRENT.md
+docs/TASKS.md
+docs/REVERSE_AUDIT_REPORT.md
+
+# 测试和实验代码
+playground/
+tests/
+
+# 视频下载工具
+video_downloader/
+
+# 内部协议文档
+PROTOCOL.md
+
+# 使用示例文档
+skilled_agent_USAGE_EXAMPLE.md
+old_docs/
