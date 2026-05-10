@@ -11,14 +11,10 @@
             "id": "c487e600eb9b60e9",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "AI_HANDOVER.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "AI_HANDOVER"
+              "title": "New tab"
             }
           }
         ]
@@ -185,20 +181,16 @@
   },
   "active": "c487e600eb9b60e9",
   "lastOpenFiles": [
-    "CURRENT.md",
-    "TASKS.md",
-    "REPLAY_LOG_SYSTEM.md",
-    "AI_HANDOVER.md",
-    "reports/05062026/TASK3_IMPLEMENTATION_SUMMARY.md",
-    "reports/05062026/TASK2_IMPLEMENTATION_SUMMARY.md",
-    "reports/05062026/TASK1_IMPLEMENTATION_SUMMARY.md",
-    "reports/05062026",
-    "reports/5062026",
-    "TASK1_IMPLEMENTATION_SUMMARY.md",
-    "ARCHITECTURE.md",
-    "ARCHITECTURE_AUDIT_REPORT.md",
-    "REVERSE_AUDIT_REPORT.md",
+    "reports/before-april-20/VERIFICATION_CHECKLIST.md",
+    "reports/before-april-20/SELECTOR_SYNTAX_QUICK_REF.md",
+    "reports/before-april-20/SELECTOR_SYNTAX_FIX.md",
     "reports/before-april-20/REALITY_CHECK.md",
+    "reports/before-april-20/ELEMENT_MAPPING_SYNC.md",
+    "reports/before-april-20/ELEMENT_ID_FIX.md",
+    "reports/before-april-20/DATA_FLOW_FIX_SUMMARY.md",
+    "reports/before-april-20/CLICK_SELECTOR_FIX_QUICK_REF.md",
+    "reports/before-april-20/CLICK_SELECTOR_FIX.md",
+    "reports/before-april-20",
     "reports/april_20-29/TASK2_COMPLETION.md",
     "reports/april_20-29",
     "reports/apr-30/task4_hermes_workflow_implementation.md",
@@ -206,14 +198,21 @@
     "reports/apr-30/task2_loop_monitor_implementation.md",
     "reports/apr-30/epic_self_evolution_summary.md",
     "reports/apr-30",
+    "reports/05062026/TASK2_IMPLEMENTATION_SUMMARY.md",
+    "reports/05062026/TASK3_IMPLEMENTATION_SUMMARY.md",
+    "reports/05062026/TASK1_IMPLEMENTATION_SUMMARY.md",
+    "reports/05062026",
+    "modules/workflow.md",
+    "modules/tools.md",
     "modules/skill_manager_usage.md",
+    "modules/perception.md",
     "modules/memory.md",
     "modules/loop_monitor_usage.md",
-    "HERMES_WORKFLOW_GUIDE.md",
-    "TASK2_COMPLETION.md",
-    "REALITY_CHECK.md",
-    "reports/epic_self_evolution_summary.md",
-    "reports/task4_hermes_workflow_implementation.md",
-    "reports/task3_skill_manager_implementation.md"
+    "modules/llm.md",
+    "modules/execution.md",
+    "modules",
+    "instructions/claude-instruction.md",
+    "instructions",
+    "reports/5062026"
   ]
 }
