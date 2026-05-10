@@ -1,242 +1,100 @@
-# 🤖 Web Agent
+# 🌐 Web-Use-Agent
 
-> **基于视觉-DOM双模态的进化型智能网页代理**  
-> 具备Set-of-Mark视觉感知、物理坐标降维打击执行、防死循环熔断、以及自我进化能力
+一个具备自进化记忆能力的 Vision-DOM 多模态网页 Agent。  
+给它一个目标——它会自动浏览、阅读、点击并学习。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Playwright](https://img.shields.io/badge/playwright-1.40+-green.svg)](https://playwright.dev/)
+![Demo](demo.gif)
 
 ---
 
-## 📺 演示视频
+## ✨ 功能特性
 
-> **🎬 查看完整演示**: [点击这里观看](./demo/demo.mp4)  
-> *(视频展示了Agent自动完成复杂网页任务的全过程)*
-
----
-
-## ✨ 核心特性
-
-### 🎯 **双模态感知系统**
-- **Set-of-Mark (SoM) 视觉标注**: 动态在页面元素上画红框+数字标号,让VLM精准识别交互目标
-- **极致压缩的DOM文本**: 将完整DOM树拍平为极简文本格式,单步Token从55K降至5K (节省90%)
-- **懒感知机制**: 基于脏标记的智能缓存,本地工具操作时复用缓存,避免无效感知
-
-### 🛡️ **防呆执行系统**
-- **2层兜底策略**: 
-  1. 首选Playwright Selector (1秒Fail Fast)
-  2. 失败后降级为绝对物理坐标点击 (含越界滚动保护)
-- **拟人化点击序列**: 0.2秒悬停 + 150ms按压延迟,规避反爬虫检测
-- **坐标转换闭环**: 感知层提取绝对物理坐标,执行层动态计算视口相对坐标,防止滚动偏移导致点歪
-
-### 🔥 **智能熔断系统**
-- **基于信息熵的死循环检测**: 监控动作熵、状态熵与震荡分数,自动拦截重复无效操作
-- **LLM幻觉拦截**: 门面层校验element_id合法性,幻觉时追加红字反馈并重试(最多3次)
-- **滚动到底部检测**: 防止Agent在页面底部陷入无限滚动死循环
-
-### 🧠 **自我进化系统**
-- **任务成功后自动反思**: 提炼泛化SOP并保存到本地"海马体"
-- **相同意图直接复用**: 下次遇到相似任务,直接注入历史成功经验
-- **底座纯洁性**: 业务逻辑完全通过动态Skill注入,核心系统保持通用
+- **网页自动化** —— 搜索、导航、填写表单、执行多步骤网页流程
+- **本地 + Web 联动任务** —— 读取本地文件，并根据其内容在网页上执行操作
+- **信息检索** —— 查询体育比分、天气、新闻等跨站点信息
+- **电商操作** —— 商品搜索、商品发布与表单填写
 
 ---
 
-## 🏗️ 架构设计
+## 🧠 工作原理
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Workflow (中枢)                         │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │ ReAct Loop  │  │ Action Router│  │ Lazy Perception│      │
-│  └─────────────┘  └──────────────┘  └──────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-           │                    │                    │
-           ▼                    ▼                    ▼
-┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
-│  Perception      │  │  Execution       │  │  Tools           │
-│  ┌────────────┐  │  │  ┌────────────┐  │  │  ┌────────────┐  │
-│  │ SoM Engine │  │  │  │ Actions    │  │  │  │ Local Exec │  │
-│  │ (视觉标注)  │  │  │  │ (2层兜底)  │  │  │  │ (本地工具)  │  │
-│  └────────────┘  │  │  └────────────┘  │  │  └────────────┘  │
-└──────────────────┘  └──────────────────┘  └──────────────────┘
-           │                    │                    │
-           └────────────────────┼────────────────────┘
-                                ▼
-                    ┌──────────────────────┐
-                    │  LLM Client (门面)    │
-                    │  ┌────────────────┐  │
-                    │  │ Self-Correction│  │
-                    │  │ (幻觉拦截)      │  │
-                    │  └────────────────┘  │
-                    └──────────────────────┘
-                                ▼
-                    ┌──────────────────────┐
-                    │  Loop Monitor        │
-                    │  (死循环熔断)         │
-                    └──────────────────────┘
-```
+### 感知系统：Vision + DOM 双模态
+在每一步中，Agent 会对可交互元素添加编号边界框（Set-of-Mark），提取压缩后的 DOM 树，并将带标注的网页截图与结构化文本一起发送给 LLM —— 让模型同时获得页面的视觉视图与结构视图。
+
+### 记忆系统：三层记忆结构
+| 层级 | 存储内容 | 持续时间 |
+|-------|---------------|----------|
+| 长期记忆 | 成功 SOP 与失败模式 | 跨会话持久化 |
+| 中期记忆 | TaskState（目标、子目标、里程碑、阻塞信息） | 当前任务 |
+| 短期记忆 | 带有 MILESTONE 标记的最近操作 | 当前上下文窗口 |
+
+### 自进化能力
+任务成功后，Agent 会反思自己的操作历史，并提炼出可复用 SOP。  
+下一次遇到类似目标时，它会自动加载 SOP，跳过探索过程，从而随着使用不断变快。
+
+### 上下文压缩
+当上下文窗口接近容量上限（80% 阈值）时，Context Manager 会保留 TaskState 与 MILESTONE 操作，压缩常规步骤，并重建一个更精简但仍保持逻辑一致性的上下文。
+
+### 防循环熔断机制
+基于熵值的循环监控器会检测重复动作模式，并在 Agent 陷入死循环前触发回退策略（人工介入或策略切换）。
+
+---
+
+## 🛠️ 技术栈
+
+- **浏览器控制** —— Playwright
+- **感知系统** —— Set-of-Mark (SoM) 视觉定位 + DOM 提取
+- **LLM 提供商** —— Xiaomi MiMo、Zhipu GLM、Ollama（本地 Qwen3）
+- **架构** —— 带有懒感知与 dirty-flag 缓存机制的 ReAct Loop
 
 ---
 
 ## 🚀 快速开始
 
-### 1. 环境要求
-
-- Python 3.8+
-- macOS / Linux / Windows
-- 稳定的网络连接
-
-### 2. 安装依赖
-
 ```bash
-# 克隆仓库
-git clone https://github.com/Hins2329/web-use-agent.git
-cd web-use-agent
-
-# 创建虚拟环境
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
 # 安装依赖
 pip install -r requirements.txt
-
-# 安装Playwright浏览器
 playwright install chromium
-```
 
-### 3. 配置API密钥
+# 配置模型
+cp config.yaml.example config.yaml
+# 编辑 config.yaml 并填写 API Key
 
-复制 `.env.example` 为 `.env` 并填入你的API密钥:
-
-```bash
-cp .env.example .env
-```
-
-编辑 `.env` 文件:
-
-```env
-# 智谱AI (推荐用于VLM)
-ZHIPU_API_KEY="your_zhipu_api_key"
-
-# 小米AI (可选)
-XIAOMI_API_KEY="your_xiaomi_api_key"
-
-# Browser Use API (可选)
-BROWSER_USE_API_KEY="your_browser_use_api_key"
-```
-
-### 4. 运行Agent
-
-**交互式模式**:
-
-```bash
+# 运行
 python run_agent.py
 ```
 
-运行后会出现交互式输入提示：
+然后输入任意任务目标：
 
-```
-================================================================================
-🤖 Web Agent - 交互式模式
-================================================================================
-💡 输入任务目标开始执行，输入 'quit' 或 'exit' 退出
-================================================================================
-
-📝 请输入任务目标: 在淘宝搜索 RTX 5090 并告诉我第一项的价格
-
-[Agent开始执行任务...]
-```
-
-**使用说明**:
-- 输入任务目标后按回车开始执行
-- 任务完成后可继续输入下一个任务
-- 输入 `quit`、`exit` 或 `q` 退出程序
-- 按 `Ctrl+C` 也可随时退出
+📝 请输入任务目标: 查询今天NBA比赛结果，读取 note.md 里的留言并回答
 
 ---
 
-## 📖 使用示例
+## 📁 项目结构
 
-### 示例1: 自动搜索商品
-
-```python
-from src.agent.workflow.workflow import Workflow
-from src.config.settings import AppConfig
-
-config = AppConfig()
-workflow = Workflow(config)
-
-await workflow.run_task(
-    task="在淘宝搜索'机械键盘',找到价格在500-1000元的商品"
-)
-```
-
-### 示例2: 注入业务Skill
-
-```python
-task_guidance = """
-任务: 上架商品到淘宝
-步骤:
-1. 导航到卖家中心
-2. 点击"发布商品"
-3. 填写商品信息
-4. 上传商品图片
-5. 设置价格和库存
-6. 提交发布
-"""
-
-await workflow.run_task(
-    task="上架商品",
-    task_guidance=task_guidance
-)
+```text
+src/
+├── agent/
+│   ├── workflow/      # ReAct Loop、循环监控
+│   ├── perception/    # SoM 提取、DOM 解析
+│   ├── execution/     # 浏览器操作、坐标系统
+│   ├── memory/        # TaskState、ContextManager、SkillManager
+│   └── llm/           # 多模型提供商客户端
+tools/
+└── replay_viewer.py   # 任务步骤回放工具
 ```
 
 ---
 
-## 🔧 配置说明
+## 🔍 回放任意任务
 
-主要配置文件: `config.yaml`
-
-```yaml
-agent:
-  max_steps: 30                    # 最大执行步数
-  login_pause_duration: 30         # 登录页面暂停时长(秒)
-  
-browser:
-  headless: false                  # 是否无头模式
-  viewport_width: 1280             # 视口宽度
-  viewport_height: 720             # 视口高度
-  
-llm:
-  provider: "zhipu"                # LLM提供商
-  model: "glm-4-plus"              # 模型名称
-  temperature: 0.1                 # 温度参数
-  
-vlm:
-  provider: "zhipu"                # VLM提供商
-  model: "glm-4v-plus"             # 视觉模型名称
+```bash
+python tools/replay_viewer.py logs/replay_task_1.jsonl --filter MILESTONE
 ```
 
 ---
 
-## 📄 许可证
+## 📌 注意
 
-本项目采用 [MIT License](./LICENSE)
-
----
-
-## 📧 联系方式
-
-- **GitHub**: [@Hins2329](https://github.com/Hins2329)
-- **Issues**: [提交问题](https://github.com/Hins2329/web-use-agent/issues)
-
----
-
-<div align="center">
-
-**⭐ 如果这个项目对你有帮助,请给个Star! ⭐**
-
-Made with ❤️ by Hins2329
-
-</div>
+该项目目前仍处于积极开发阶段。  
+`main-dev` 分支包含最新的开发代码。
